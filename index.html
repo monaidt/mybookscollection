@@ -1,171 +1,370 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Book Selector</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Graph Background */
-        .background-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0.2;
-        }
-        .graph {
-            width: 80vw;
-            height: 80vh;
-        }
-        
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: auto;
-            position: relative;
-            z-index: 1;
-        }
-        h2 {
-            color: #333;
-        }
-        .dropdown {
-            margin: 15px 0;
-        }
-        select {
-            padding: 10px;
-            width: 100%;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .buttons {
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 15px;
-            font-size: 16px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 5px;
-            transition: 0.3s;
-        }
-        .view-btn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .view-btn:hover {
-            background-color: #45a049;
-        }
-        .download-btn {
-            background-color: #008CBA;
-            color: white;
-        }
-        .download-btn:hover {
-            background-color: #007bb5;
-        }
-        #pdfViewer {
-            width: 100%;
-            height: 500px;
-            margin-top: 20px;
-            display: none;
-            border: 1px solid #ddd;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Science Library — Apple Design System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+    :root {
+      --accent: #32D74B;
+      --background: #000000;
+      --surface: #1C1C1E;
+      --text-primary: #FFFFFF;
+      --text-secondary: #86868B;
+      --border-radius: 14px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--background);
+      color: var(--text-primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      background: var(--surface);
+      padding: 2.5rem;
+      border-radius: var(--border-radius);
+      width: 680px;
+      max-width: 90%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+      animation: subtleAppear 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes subtleAppear {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 26px;
+      margin-bottom: 2.5rem;
+      background: linear-gradient(45deg, #32D74B, #00D0FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .dropdowns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown::after {
+      content: "⌄";
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+
+    .dropdown select {
+      width: 100%;
+      padding: 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 15px;
+      color: var(--text-primary);
+      appearance: none;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dropdown select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(50, 215, 75, 0.15);
+    }
+
+    .dropdown select option {
+      background: var(--surface);
+      color: var(--text-primary);
+      padding: 0.8rem 1rem;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    button {
+      padding: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-primary);
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .pdf-viewer {
+      margin-top: 2rem;
+      width: 100%;
+      height: 500px;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      display: none;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--surface);
+      position: relative;
+    }
+
+    .pdf-viewer:fullscreen {
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+    }
+
+    .close-btn,
+    .fullscreen-btn {
+      position: absolute;
+      top: 16px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
+    }
+
+    .close-btn {
+      right: 16px;
+      background: #FF453A;
+    }
+
+    .fullscreen-btn {
+      right: 56px;
+    }
+
+    .close-btn:hover,
+    .fullscreen-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .close-btn:hover {
+      background: #FF3B30;
+    }
+
+    .fullscreen-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .shrink-icon {
+      display: none;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+  </style>
 </head>
 <body>
-    <div class="background-container">
-        <svg class="graph" viewBox="0 0 100 100">
-            <polyline points="0,80 20,40 40,60 60,20 80,50 100,10" stroke="blue" stroke-width="2" fill="none"/>
-            <circle cx="20" cy="40" r="2" fill="red"/>
-            <circle cx="40" cy="60" r="2" fill="red"/>
-            <circle cx="60" cy="20" r="2" fill="red"/>
-            <circle cx="80" cy="50" r="2" fill="red"/>
+  <canvas id="scienceArtCanvas"></canvas>
+  <div class="container">
+    <h2>Academic Books Library</h2>
+    <div class="dropdowns">
+      <div class="dropdown">
+        <select id="math-books">
+          <option value="">Mathematics</option>
+          <option value="calculus.pdf">Calculus: Early Transcendentals</option>
+          <option value="linear-algebra.pdf">Linear Algebra with Applications</option>
+          <option value="differential-equations.pdf">Advanced Differential Equations</option>
+          <option value="probability.pdf">Probability & Statistical Theory</option>
+          <option value="complex-analysis.pdf">Complex Analysis in Physics</option>
+        </select>
+      </div>
+      <div class="dropdown">
+        <select id="physics-books">
+          <option value="">Physics</option>
+          <option value="classical-mechanics.pdf">Classical Mechanics: Newtonian Systems</option>
+          <option value="quantum-theory.pdf">Quantum Theory of Matter</option>
+          <option value="electrodynamics.pdf">Advanced Electrodynamics</option>
+          <option value="thermodynamics.pdf">Statistical Thermodynamics</option>
+          <option value="astrophysics.pdf">Astrophysics & Cosmology</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions">
+      <button onclick="viewBook()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
         </svg>
+        Preview
+      </button>
+      <button onclick="downloadBook()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Download
+      </button>
     </div>
-    
-    <div class="container">
-        <h2>Select a PDF Book</h2>
-        
-        <div class="dropdown">
-            <label for="book1">Physics Books:</label>
-            <select id="book1" onchange="showOptions(this.value)">
-                <option value="">--Select a Book--</option>
-                <option value="physics_book1.pdf">Physics Basics</option>
-                <option value="physics_book2.pdf">Classical Mechanics</option>
-                <option value="physics_book3.pdf">Quantum Mechanics</option>
-                <option value="physics_book4.pdf">Electromagnetism</option>
-                <option value="physics_book5.pdf">Thermodynamics</option>
-                <option value="physics_book6.pdf">Relativity</option>
-                <option value="physics_book7.pdf">Astrophysics</option>
-                <option value="physics_book8.pdf">Nuclear Physics</option>
-                <option value="physics_book9.pdf">Optics</option>
-                <option value="physics_book10.pdf">Solid State Physics</option>
-            </select>
-        </div>
-        
-        <div class="dropdown">
-            <label for="book2">Math Books:</label>
-            <select id="book2" onchange="showOptions(this.value)">
-                <option value="">--Select a Book--</option>
-                <option value="math_book1.pdf">Algebra Essentials</option>
-                <option value="math_book2.pdf">Geometry Insights</option>
-                <option value="math_book3.pdf">Calculus Basics</option>
-                <option value="math_book4.pdf">Linear Algebra</option>
-                <option value="math_book5.pdf">Probability and Statistics</option>
-                <option value="math_book6.pdf">Number Theory</option>
-                <option value="math_book7.pdf">Discrete Mathematics</option>
-                <option value="math_book8.pdf">Differential Equations</option>
-                <option value="math_book9.pdf">Complex Analysis</option>
-                <option value="math_book10.pdf">Mathematical Logic</option>
-            </select>
-        </div>
-        
-        <div id="options" class="buttons" style="display:none;">
-            <button id="viewBtn" class="view-btn">View</button>
-            <button id="downloadBtn" class="download-btn">Download</button>
-        </div>
+    <div class="pdf-viewer">
+      <button class="fullscreen-btn" onclick="toggleFullscreen()">
+        <svg class="expand-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+        <svg class="shrink-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path>
+        </svg>
+      </button>
+      <button class="close-btn" onclick="closePdfViewer()">×</button>
+      <iframe id="pdf-iframe" width="100%" height="100%" style="border: none;"></iframe>
     </div>
-    
-    <iframe id="pdfViewer"></iframe>
-    
-    <script>
-        function showOptions(file) {
-            if (file) {
-                document.getElementById("options").style.display = "block";
-                document.getElementById("viewBtn").onclick = function() {
-                    document.getElementById("pdfViewer").src = file;
-                    document.getElementById("pdfViewer").style.display = "block";
-                };
-                document.getElementById("downloadBtn").onclick = function() {
-                    let link = document.createElement('a');
-                    link.href = file;
-                    link.download = file;
-                    link.click();
-                };
-            } else {
-                document.getElementById("options").style.display = "none";
-                document.getElementById("pdfViewer").style.display = "none";
-            }
-        }
-    </script>
+  </div>
+  <script>
+    // Particle System
+    const canvas = document.getElementById('scienceArtCanvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Particle {
+      constructor() {
+        this.reset();
+        this.baseSize = Math.random() * 2 + 1;
+        this.alpha = Math.random() * 0.4 + 0.1;
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height + canvas.height;
+        this.velocity = Math.random() * 0.5 + 0.3;
+      }
+
+      update() {
+        this.y -= this.velocity;
+        if (this.y < -10) this.reset();
+        this.size = this.baseSize * (Math.sin(Date.now() * 0.001) * 0.3 + 0.7);
+      }
+
+      draw() {
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    const particles = Array(200).fill().map(() => new Particle());
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particles.forEach(p => p.reset());
+    });
+
+    // Fullscreen Handling
+    document.addEventListener('fullscreenchange', updateFullscreenButton);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+    document.addEventListener('msfullscreenchange', updateFullscreenButton);
+
+    function toggleFullscreen() {
+      const viewer = document.querySelector('.pdf-viewer');
+      if (!document.fullscreenElement) {
+        if (viewer.requestFullscreen) viewer.requestFullscreen();
+        else if (viewer.webkitRequestFullscreen) viewer.webkitRequestFullscreen();
+        else if (viewer.msRequestFullscreen) viewer.msRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
+      }
+    }
+
+    function updateFullscreenButton() {
+      const isFullscreen = !!document.fullscreenElement;
+      document.querySelector('.expand-icon').style.display = isFullscreen ? 'none' : 'block';
+      document.querySelector('.shrink-icon').style.display = isFullscreen ? 'block' : 'none';
+    }
+
+    // Book Interactions
+    function getSelectedBook() {
+      return document.getElementById('physics-books').value || 
+             document.getElementById('math-books').value;
+    }
+
+    function viewBook() {
+      const book = getSelectedBook();
+      if (book) {
+        document.querySelector('.pdf-viewer').style.display = 'block';
+        document.getElementById('pdf-iframe').src = book;
+      } else {
+        alert('Please select a book from either category');
+      }
+    }
+
+    function closePdfViewer() {
+      if (document.fullscreenElement) document.exitFullscreen();
+      document.querySelector('.pdf-viewer').style.display = 'none';
+      document.getElementById('pdf-iframe').src = '';
+    }
+
+    function downloadBook() {
+      const book = getSelectedBook();
+      if (book) {
+        const link = document.createElement('a');
+        link.href = book;
+        link.download = book;
+        link.click();
+      } else {
+        alert('Please select a book to download');
+      }
+    }
+  </script>
 </body>
 </html>
